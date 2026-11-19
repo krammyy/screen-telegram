@@ -1,17 +1,6 @@
 {
-  "bot_token": "PASTE_BOT_TOKEN_HERE",
-  "chat_id": "PASTE_CHAT_ID_HERE",
-  "chat_ids": [],
-  "interval_seconds": 15,
+  "bot_token": "",
+  "chat_id": "",
   "jpeg_quality": 70,
-  "hotkey": "ctrl+shift+s",
-  "allowed_machine_id": "",
-  "caption_prefix": "screen",
-  "stealth": true,
-  "proxy_url": "",
-  "mtproto_server": "",
-  "mtproto_port": 0,
-  "mtproto_secret": "",
-  "api_id": 0,
-  "api_hash": ""
+  "proxy_url": ""
 }

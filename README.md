@@ -1,81 +1,22 @@
 # Screen → Telegram
 
-Утилита для **вашей** Windows-машины: снимает экран и шлёт JPEG в Telegram.
-На других ПК не работает — жёсткая привязка в `app/owner_lock.py`.
-
-В режиме `stealth: true` иконки в трее нет, окон при старте нет. Остановка: `stop.bat`.
+Приложение делает снимок экрана и отправляет его в выбранный чат через **вашего Telegram-бота**. Снимок можно проверить в окне перед отправкой. Настройки привязаны к боту и чату, поэтому проект можно запустить на другом компьютере с графическим сеансом и разрешением на захват экрана.
 
 ## Установка
 
-```bat
-cd screen-telegram
+Нужны Python 3.10+ с Tkinter и доступ к Telegram Bot API. Выполните из папки проекта:
+
+```text
 python -m pip install -r requirements.txt
-copy config.example.json config.json
 ```
 
-## Настройка Telegram
+## Настройка и запуск
 
-1. В [@BotFather](https://t.me/BotFather) создай бота → получи `bot_token`.
-2. Напиши боту любое сообщение.
-3. Открой в браузере:
-   `https://api.telegram.org/bot<TOKEN>/getUpdates`
-4. Найди `"chat":{"id": ...}` — это `chat_id` (для лички число, для группы часто отрицательное).
-5. Впиши `bot_token` в `config.json`.
-6. Если `api.telegram.org` недоступен:
-   - **MTProto** (ссылка `t.me/proxy?...`):
+1. Создайте своего бота через [@BotFather](https://t.me/BotFather) и напишите ему в Telegram.
+2. Скопируйте `config.example.json` в `config.json` и укажите токен в `bot_token`.
+3. Выполните `python main.py --fetch-chat` и перенесите ID нужного чата в `chat_id`.
+4. Запустите `python main.py` или `run.bat` в Windows. Нажмите **Сделать снимок**, затем **Отправить снимок**.
 
-```bat
-python main.py --set-proxy "https://t.me/proxy?server=...&port=...&secret=..."
-```
+При необходимости задайте `proxy_url` для HTTP/SOCKS или `jpeg_quality` в диапазоне 10–95. Храните токен в локальном `config.json`.
 
-     Затем получи `api_id` и `api_hash` на https://my.telegram.org → API development tools и впиши в `config.json`.
-   - либо обычный HTTP/SOCKS в `proxy_url`, например `socks5://127.0.0.1:1080`.
-7. Напиши боту сообщение и выполни:
-
-```bat
-python main.py --fetch-chat
-```
-
-## Привязка только к этой машине
-
-```bat
-python main.py --bind --lock
-```
-
-Это записывает fingerprint в `config.json` **и** зашивает его в `app/owner_lock.py`.
-На чужом ПК:
-- приложение молча не стартует;
-- `--bind` не перепривяжет (пока `ALLOW_REBIND = False`).
-
-Проверка fingerprint:
-
-```bat
-python main.py --whoami
-```
-
-## Запуск
-
-```bat
-python main.py
-```
-
-или `run.bat` / `ScreenTelegram.exe` с рабочего стола.
-
-- Stealth: без иконки в трее; ручной снимок — горячая клавиша (`ctrl+shift+s` по умолчанию).
-- Остановка: `stop.bat`.
-- Чтобы снова видеть трей: `"stealth": false` в `config.json`.
-
-## Параметры `config.json`
-
-| Поле | Смысл |
-|------|--------|
-| `bot_token` | токен бота |
-| `chat_id` | куда слать |
-| `interval_seconds` | минимум 5 |
-| `jpeg_quality` | 10..95 |
-| `hotkey` | например `ctrl+shift+s` |
-| `allowed_machine_id` | дублирует привязку; авторитет — `owner_lock.py` |
-| `stealth` | `true` = без иконки/окон |
-| `caption_prefix` | префикс подписи к фото |
-
-Лог: `screen-telegram.log`.
+Для сборки Windows EXE установите PyInstaller (`python -m pip install pyinstaller`) и запустите `build_desktop_exe.bat`. Скопируйте `config.json` рядом с `dist/ScreenTelegram.exe`.

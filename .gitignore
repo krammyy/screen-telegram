@@ -1,8 +1,4 @@
 config.json
-*.session
-*.session-journal
-*.log
-stop.flag
 __pycache__/
 *.py[cod]
 build/
@@ -10,3 +6,7 @@ dist/
 *.spec
 .venv/
 venv/
+*.session
+*.session-journal
+*.log
+stop.flag
