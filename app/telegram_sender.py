@@ -18,6 +18,7 @@ class HttpTelegramSender:
                 f"{self.base}/{method}",
                 timeout=(5, 25),
                 proxies=self.proxies,
+                allow_redirects=False,
                 **kwargs,
             )
         except requests.RequestException:
